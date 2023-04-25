@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "171220853826",
+    "project_id": "air-quality-index-5562e",
+    "storage_bucket": "air-quality-index-5562e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171220853826:android:220f2f8c30b0402ed479db",
+        "android_client_info": {
+          "package_name": "com.example.aq_iot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171220853826-sk1u4valnh2a5ppg48me7e3ave4vcleq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK2JwvCfvKA6khwHd4l4EngagvFZmLCPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171220853826-sk1u4valnh2a5ppg48me7e3ave4vcleq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
