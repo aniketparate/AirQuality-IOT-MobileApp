@@ -1,3 +1,4 @@
+import 'package:aq_iot/co_chart.dart';
 import 'package:aq_iot/forgotPassword.dart';
 import 'package:aq_iot/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterPage(),
         '/dashboard': (context) => DashboardPage(),
         '/forgot_password': (context) => ForgotPassword(),
+        // '/co_chart': (context) => CoChartPage(coData: coData),
       },
     );
   }
