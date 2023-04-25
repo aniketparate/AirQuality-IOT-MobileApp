@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:aq_iot/co_chart.dart';
+import 'package:aq_iot/heatindex_chart.dart';
+import 'package:aq_iot/humidity_chart.dart';
 import 'package:aq_iot/temp_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -82,11 +84,14 @@ class _DashboardPageState extends State<DashboardPage> {
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+              Container(
+                height: 100,
+                child: const DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text('Charts'),
                 ),
-                child: Text('Drawer Header'),
               ),
               ListTile(
                 title: const Text('CO Chart'),
@@ -107,6 +112,30 @@ class _DashboardPageState extends State<DashboardPage> {
                       MaterialPageRoute(
                         builder: (context) => TempChartPage(tempData: _temp),
                       ));
+                },
+              ),
+              ListTile(
+                title: const Text('Humidity Chart'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          HumidityChartPage(humidityData: _humidity),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text('Heat Index Chart'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          HeatIndChartPage(heatindData: _heatIndex),
+                    ),
+                  );
                 },
               ),
             ],
@@ -138,83 +167,167 @@ class _DashboardPageState extends State<DashboardPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'CO',
                           style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                        if (_co.isNotEmpty)
-                          Text(
-                            '${_co.last.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 24.0),
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${_co.last.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 32.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const Text(
+                              'ppm',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 ),
                 Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Temperature',
                           style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                        if (_temp.isNotEmpty)
-                          Text(
-                            '${_temp.last.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 24.0),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${_temp.last.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.thermostat_outlined,
+                              size: 30,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 ),
                 Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Humidity',
                           style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                        if (_humidity.isNotEmpty)
-                          Text(
-                            '${_humidity.last.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 24.0),
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${_humidity.last.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 32.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.opacity,
+                              size: 30.0,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 ),
                 Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                          child: Text(
-                            'Heat Index',
-                            style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                        const Text(
+                          'Heat Index',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        if (_heatIndex.isNotEmpty)
-                          Text(
-                            '${_heatIndex.last.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 24.0),
-                          ),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${_heatIndex.last.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontSize: 32.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const Text(
+                              '°C',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

@@ -2,16 +2,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class TempChartPage extends StatefulWidget {
-  final List tempData;
+class HeatIndChartPage extends StatefulWidget {
+  final List heatindData;
 
-  TempChartPage({required this.tempData});
+  HeatIndChartPage({required this.heatindData});
 
   @override
-  _TempChartPageState createState() => _TempChartPageState();
+  _HeatIndChartPageState createState() => _HeatIndChartPageState();
 }
 
-class _TempChartPageState extends State<TempChartPage> {
+class _HeatIndChartPageState extends State<HeatIndChartPage> {
   List<charts.Series<double, DateTime>> _seriesData = [];
 
   @override
@@ -20,12 +20,12 @@ class _TempChartPageState extends State<TempChartPage> {
     // _updateSeriesData();
     _seriesData.add(
       charts.Series<double, DateTime>(
-        id: 'Temp',
+        id: 'HeatIndex',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (value, index) => DateTime.now()
-            .subtract(Duration(seconds: widget.tempData.length - index! - 1)),
+        domainFn: (value, index) => DateTime.now().subtract(
+            Duration(seconds: widget.heatindData.length - index! - 1)),
         measureFn: (value, _) => value,
-        data: widget.tempData.map((value) => value as double).toList(),
+        data: widget.heatindData.map((value) => value as double).toList(),
       ),
     );
   }
@@ -34,7 +34,7 @@ class _TempChartPageState extends State<TempChartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Temperature Chart'),
+          title: Text('Heat Index Chart'),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -51,9 +51,11 @@ class _TempChartPageState extends State<TempChartPage> {
                         dateTimeFactory: const charts.LocalDateTimeFactory(),
                         primaryMeasureAxis: charts.NumericAxisSpec(
                           viewport: charts.NumericExtents(
-                              widget.tempData.reduce((a, b) => a < b ? a : b) -
+                              widget.heatindData
+                                      .reduce((a, b) => a < b ? a : b) -
                                   5,
-                              widget.tempData.reduce((a, b) => a > b ? a : b) +
+                              widget.heatindData
+                                      .reduce((a, b) => a > b ? a : b) +
                                   5),
                         ),
                       ),
