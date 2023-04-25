@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:aq_iot/co_chart.dart';
+import 'package:aq_iot/temp_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -75,146 +77,151 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+        drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text('Drawer Header'),
               ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CoChartPage(coData: _co),
-                  ),
-                );
+              ListTile(
+                title: const Text('CO Chart'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CoChartPage(coData: _co),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text('Temperature Chart'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TempChartPage(tempData: _temp),
+                      ));
+                },
+              ),
+            ],
+          ),
+        ),
+        appBar: AppBar(
+          // automaticallyImplyLeading: false,
+          title: Text('Air Quality Monitoring'),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('email');
+                prefs.remove('password');
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/', (route) => false);
               },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+              icon: CircleAvatar(
+                backgroundColor: Colors.grey[300],
+                child: Icon(Icons.logout, color: Colors.black),
+              ),
             ),
           ],
         ),
-      ),
-      appBar: AppBar(
-        // automaticallyImplyLeading: false,
-        title: Text('Air Quality Monitoring'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.remove('email');
-              prefs.remove('password');
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-            },
-            icon: CircleAvatar(
-              backgroundColor: Colors.grey[300],
-              child: Icon(Icons.logout, color: Colors.black),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'CO',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        if (_co.isNotEmpty)
+                          Text(
+                            '${_co.last.toStringAsFixed(2)}',
+                            style: TextStyle(fontSize: 24.0),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Temperature',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        if (_temp.isNotEmpty)
+                          Text(
+                            '${_temp.last.toStringAsFixed(2)}',
+                            style: TextStyle(fontSize: 24.0),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Humidity',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        if (_humidity.isNotEmpty)
+                          Text(
+                            '${_humidity.last.toStringAsFixed(2)}',
+                            style: TextStyle(fontSize: 24.0),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Heat Index',
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        if (_heatIndex.isNotEmpty)
+                          Text(
+                            '${_heatIndex.last.toStringAsFixed(2)}',
+                            style: TextStyle(fontSize: 24.0),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'CO',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    if (_co.isNotEmpty)
-                      Text(
-                        '${_co.last.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 24.0),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Temperature',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    if (_temp.isNotEmpty)
-                      Text(
-                        '${_temp.last.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 24.0),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Humidity',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    if (_humidity.isNotEmpty)
-                      Text(
-                        '${_humidity.last.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 24.0),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Text(
-                        'Heat Index',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    if (_heatIndex.isNotEmpty)
-                      Text(
-                        '${_heatIndex.last.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 24.0),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+        ));
   }
 }
