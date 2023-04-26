@@ -30,6 +30,14 @@ class _CoChartPageState extends State<CoChartPage> {
     );
   }
 
+  void _onSelectionChanged(charts.SelectionModel model) {
+    final selectedDatum = model.selectedDatum;
+
+    if (selectedDatum.isNotEmpty) {
+      print(selectedDatum.first.datum);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,21 +50,32 @@ class _CoChartPageState extends State<CoChartPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                    height: 300,
-                    child: Expanded(
-                      child: charts.TimeSeriesChart(
-                        _seriesData,
-                        animate: true,
-                        dateTimeFactory: const charts.LocalDateTimeFactory(),
-                        primaryMeasureAxis: charts.NumericAxisSpec(
-                          viewport: charts.NumericExtents(
-                              widget.coData.reduce((a, b) => a < b ? a : b) - 5,
-                              widget.coData.reduce((a, b) => a > b ? a : b) +
-                                  5),
+                if (_seriesData.isNotEmpty)
+                  SizedBox(
+                      height: 300,
+                      child: Expanded(
+                        child: charts.TimeSeriesChart(
+                          _seriesData,
+                          animate: true,
+                          selectionModels: [
+                            charts.SelectionModelConfig(
+                              type: charts.SelectionModelType.info,
+                              changedListener: _onSelectionChanged,
+                            )
+                          ],
+                          dateTimeFactory: const charts.LocalDateTimeFactory(),
+                          primaryMeasureAxis: charts.NumericAxisSpec(
+                            viewport: charts.NumericExtents(
+                                widget.coData.reduce((a, b) => a < b ? a : b) -
+                                    5,
+                                widget.coData.reduce((a, b) => a > b ? a : b) +
+                                    5),
+                            tickFormatterSpec:
+                                charts.BasicNumericTickFormatterSpec(
+                                    (value) => '${value!.toInt()} ppm'),
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
                 Column(
                   children: [
                     Divider(

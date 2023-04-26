@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:aq_iot/co_chart.dart';
-import 'package:aq_iot/heatindex_chart.dart';
-import 'package:aq_iot/humidity_chart.dart';
-import 'package:aq_iot/temp_chart.dart';
+import 'package:aq_iot/charts/co_chart.dart';
+import 'package:aq_iot/charts/heatindex_chart.dart';
+import 'package:aq_iot/charts/humidity_chart.dart';
+import 'package:aq_iot/charts/temp_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'api_model.dart';
+import '../models/api_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fl_chart/fl_chart.dart';
 
@@ -187,14 +187,15 @@ class _DashboardPageState extends State<DashboardPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '${_co.last.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
+                            if (_co.isNotEmpty)
+                              Text(
+                                '${_co.last.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
                               ),
-                            ),
                             const Text(
                               'ppm',
                               style: TextStyle(
@@ -230,14 +231,15 @@ class _DashboardPageState extends State<DashboardPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '${_temp.last.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
+                            if (_temp.isNotEmpty)
+                              Text(
+                                '${_temp.last.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
                               ),
-                            ),
                             const Icon(
                               Icons.thermostat_outlined,
                               size: 30,
@@ -270,14 +272,15 @@ class _DashboardPageState extends State<DashboardPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '${_humidity.last.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
+                            if (_humidity.isNotEmpty)
+                              Text(
+                                '${_humidity.last.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
                               ),
-                            ),
                             const Icon(
                               Icons.opacity,
                               size: 30.0,
@@ -310,14 +313,15 @@ class _DashboardPageState extends State<DashboardPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '${_heatIndex.last.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
+                            if (_heatIndex.isNotEmpty)
+                              Text(
+                                '${_heatIndex.last.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
                               ),
-                            ),
                             const Text(
                               '°C',
                               style: TextStyle(

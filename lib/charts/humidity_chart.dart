@@ -42,24 +42,25 @@ class _HumidityChartPageState extends State<HumidityChartPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                    height: 300,
-                    child: Expanded(
-                      child: charts.TimeSeriesChart(
-                        _seriesData,
-                        animate: true,
-                        dateTimeFactory: const charts.LocalDateTimeFactory(),
-                        primaryMeasureAxis: charts.NumericAxisSpec(
-                          viewport: charts.NumericExtents(
-                              widget.humidityData
-                                      .reduce((a, b) => a < b ? a : b) -
-                                  5,
-                              widget.humidityData
-                                      .reduce((a, b) => a > b ? a : b) +
-                                  5),
+                if (_seriesData.isNotEmpty)
+                  SizedBox(
+                      height: 300,
+                      child: Expanded(
+                        child: charts.TimeSeriesChart(
+                          _seriesData,
+                          animate: true,
+                          dateTimeFactory: const charts.LocalDateTimeFactory(),
+                          primaryMeasureAxis: charts.NumericAxisSpec(
+                            viewport: charts.NumericExtents(
+                                widget.humidityData
+                                        .reduce((a, b) => a < b ? a : b) -
+                                    5,
+                                widget.humidityData
+                                        .reduce((a, b) => a > b ? a : b) +
+                                    5),
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
               ],
             ),
           ),

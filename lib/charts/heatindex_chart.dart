@@ -42,24 +42,25 @@ class _HeatIndChartPageState extends State<HeatIndChartPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                    height: 300,
-                    child: Expanded(
-                      child: charts.TimeSeriesChart(
-                        _seriesData,
-                        animate: true,
-                        dateTimeFactory: const charts.LocalDateTimeFactory(),
-                        primaryMeasureAxis: charts.NumericAxisSpec(
-                          viewport: charts.NumericExtents(
-                              widget.heatindData
-                                      .reduce((a, b) => a < b ? a : b) -
-                                  5,
-                              widget.heatindData
-                                      .reduce((a, b) => a > b ? a : b) +
-                                  5),
+                if (_seriesData.isNotEmpty)
+                  SizedBox(
+                      height: 300,
+                      child: Expanded(
+                        child: charts.TimeSeriesChart(
+                          _seriesData,
+                          animate: true,
+                          dateTimeFactory: const charts.LocalDateTimeFactory(),
+                          primaryMeasureAxis: charts.NumericAxisSpec(
+                            viewport: charts.NumericExtents(
+                                widget.heatindData
+                                        .reduce((a, b) => a < b ? a : b) -
+                                    5,
+                                widget.heatindData
+                                        .reduce((a, b) => a > b ? a : b) +
+                                    5),
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
               ],
             ),
           ),

@@ -1,18 +1,17 @@
-import 'package:aq_iot/co_chart.dart';
-import 'package:aq_iot/forgotPassword.dart';
-import 'package:aq_iot/splash_screen.dart';
+import 'package:aq_iot/pages/forgotPassword.dart';
+import 'package:aq_iot/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dashboard.dart';
-import 'login.dart';
-import 'register.dart';
+import 'pages/dashboard.dart';
+import 'pages/login.dart';
+import 'pages/register.dart';
 
 void main() async {
   // Initialize Hive
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox('dataBox');
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Hive.initFlutter();
+  // await Hive.openBox('dataBox');
 
   // Open boxes, register adapters, and do other setup work here
 
