@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -40,47 +41,43 @@ class _TempChartPageState extends State<TempChartPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<double> measureValues = _seriesData
+        .expand((series) => series.data.map((data) => data))
+        .toList();
     return Scaffold(
         appBar: AppBar(
           title: Text('Temperature Chart'),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (_seriesData.isNotEmpty)
-                  SizedBox(
-                      height: 300,
-                      child: Expanded(
-                        child: charts.TimeSeriesChart(
-                          _seriesData,
-                          animate: true,
-                          selectionModels: [
-                            charts.SelectionModelConfig(
-                              type: charts.SelectionModelType.info,
-                              changedListener: _onSelectionChanged,
-                            )
-                          ],
-                          dateTimeFactory: const charts.LocalDateTimeFactory(),
-                          primaryMeasureAxis: charts.NumericAxisSpec(
-                            viewport: charts.NumericExtents(
-                                widget.tempData
-                                        .reduce((a, b) => a < b ? a : b) -
-                                    5,
-                                widget.tempData
-                                        .reduce((a, b) => a > b ? a : b) +
-                                    5),
-                            tickFormatterSpec:
-                                charts.BasicNumericTickFormatterSpec(
-                                    (value) => '${value!.toInt()} °C'),
-                          ),
-                        ),
-                      )),
-              ],
+            child: Padding(
+          padding: const EdgeInsetsDirectional.only(
+              start: 10, end: 10, top: 50, bottom: 10),
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            width: double.infinity,
+            height: 300,
+            child: LineChart(
+              LineChartData(
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                      spots: measureValues
+                          .asMap()
+                          .entries
+                          .map((entry) =>
+                              FlSpot(entry.key.toDouble(), entry.value))
+                          .toList())
+                ],
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                ),
+              ),
             ),
           ),
-        ));
+        )));
   }
 }
