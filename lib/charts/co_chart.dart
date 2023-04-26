@@ -40,6 +40,9 @@ class _CoChartPageState extends State<CoChartPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<double> measureValues = _seriesData
+        .expand((series) => series.data.map((data) => data))
+        .toList();
     return Scaffold(
         appBar: AppBar(
           title: Text('CO Chart'),
@@ -76,6 +79,33 @@ class _CoChartPageState extends State<CoChartPage> {
                           ),
                         ),
                       )),
+                Divider(
+                  color: Colors.blue,
+                  height: 30,
+                  thickness: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (measureValues.isNotEmpty)
+                      Text(
+                        'Latest CO: ${measureValues.last.toStringAsPrecision(3)}',
+                        style: const TextStyle(
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    const Text(
+                      'ppm',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
                 Column(
                   children: [
                     Divider(

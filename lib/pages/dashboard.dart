@@ -147,9 +147,9 @@ class _DashboardPageState extends State<DashboardPage> {
           actions: [
             IconButton(
               onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.remove('email');
-                prefs.remove('password');
+                // SharedPreferences prefs = await SharedPreferences.getInstance();
+                // prefs.remove('email');
+                // prefs.remove('password');
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/', (route) => false);
               },

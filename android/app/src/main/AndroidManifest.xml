@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aq_iot">
    <application
-        android:label="aq_iot"
+        android:label="Air Wave"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

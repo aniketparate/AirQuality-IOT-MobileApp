@@ -31,8 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 100,
-              child: Image.asset('images/air-pollution.png'),
+              width: 200,
+              child: Image.asset('images/letter-logo-air-star-flow.png'),
             ),
             const SizedBox(height: 30),
             const SpinKitCircle(
