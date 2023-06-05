@@ -23,7 +23,7 @@ class _DashboardPageState extends State<DashboardPage> {
   final List _humidity = [];
   final List _heatIndex = [];
 
-  static const _fetchInterval = Duration(seconds: 30);
+  static const _fetchInterval = Duration(seconds: 10);
   static Timer? _timer;
 
   Future<void> start() async {
